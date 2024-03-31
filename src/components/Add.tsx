@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import store from '../store/empleadoStore';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react';
+import Notifications from '../utils/Notifications';
 
 const Add = () => {
     let nav = useNavigate();
@@ -18,6 +19,7 @@ const Add = () => {
             return;
         }
         nav('/');
+        Notifications('Guardado', 'El registro ha sido guardado satisfactoriamente.', 'success');
     };
 
     return (

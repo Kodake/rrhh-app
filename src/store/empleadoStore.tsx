@@ -4,11 +4,14 @@ import axios from "axios";
 import.meta.env.VITE_API_URL;
 
 class EmpleadoStore {
+    totalPages = 0;
+    currentPage = 0;
+    pageSize = 2;
     empleado: Empleado = {
         idEmpleado: 0,
         nombre: '',
-        departamento: undefined,
-        sueldo: undefined
+        departamento: '',
+        sueldo: 0
     }
     empleados: Empleado[] = [];
     consultarApi: boolean = false;
@@ -24,6 +27,17 @@ class EmpleadoStore {
             focusInput: observable
         });
     }
+
+    empleadoInicial: Empleado = {
+        idEmpleado: 0,
+        nombre: '',
+        departamento: '',
+        sueldo: 0
+    };
+
+    limpiar = () => {
+        this.setEmpleado(this.empleadoInicial);
+    };
 
     setEmpleado(empleado: Empleado) {
         this.empleado = empleado;
@@ -45,15 +59,41 @@ class EmpleadoStore {
         this.focusInput = focusInput;
     }
 
+    setTotalPages(totalPages: number) {
+        this.totalPages = totalPages;
+    }
+
+    setCurrentPage(currentPage: number) {
+        this.currentPage = currentPage;
+    }
+
     async listar(): Promise<void> {
         const url = `${import.meta.env.VITE_API_URL}/empleados`;
 
         await axios.get(url).then(resp => {
             const data = resp.data;
             this.setEmpleados(data);
-            
+
             runInAction(() => {
                 this.setEmpleados(data);
+            });
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
+
+    async listarPaginado(page: number, pageSize: number): Promise<void> {
+        const url = `${import.meta.env.VITE_API_URL}/empleados?page=${page}&pageSize=${pageSize}`;
+
+        await axios.get(url).then(resp => {
+            const data = resp.data;
+            console.log(data);
+            this.setEmpleados(data.content);
+            this.setTotalPages(data.totalPages);
+
+            runInAction(() => {
+                this.setEmpleados(data.content);
+                this.setTotalPages(data.totalPages);
             });
         }).catch((error) => {
             console.error(error);
@@ -75,53 +115,45 @@ class EmpleadoStore {
         });
     }
 
-    async guardar(): Promise<Empleado> {
+    async guardar(): Promise<void> {
         const url = `${import.meta.env.VITE_API_URL}/empleados`;
-
+    
         try {
-            const response = await axios.post(url, this.empleado);
-            const nuevoEmpleado = response.data;
-
-            runInAction(() => {
-                this.listar();
-            });
-
-            return nuevoEmpleado;
+            await axios.post(url, this.empleado);
+    
+            this.limpiar();
+            await this.listarPaginado(this.currentPage, this.pageSize);
         } catch (error) {
             console.error(error);
             throw error;
         }
     }
-
-    async actualizar(): Promise<Empleado> {
+    
+    async actualizar(): Promise<void> {
         const url = `${import.meta.env.VITE_API_URL}/empleados/${this.empleado.idEmpleado}`;
-
+    
         try {
-            const response = await axios.put(url, this.empleado);
-            const empleadoActualizado = response.data;
-
-            runInAction(() => {
-                this.listar();
-            });
-
-            return empleadoActualizado;
+            await axios.put(url, this.empleado);
+    
+            this.limpiar();
+            await this.listarPaginado(this.currentPage, this.pageSize);
         } catch (error) {
             console.error(error);
             throw error;
         }
     }
-
+    
     async eliminar(id: number): Promise<void> {
         const url = `${import.meta.env.VITE_API_URL}/empleados/${id}`;
-
-        await axios.delete(url).then(() => {
-
-            runInAction(() => {
-                this.listar();
-            });
-        }).catch((error) => {
+    
+        try {
+            await axios.delete(url);
+    
+            await this.listarPaginado(this.currentPage, this.pageSize);
+        } catch (error) {
             console.error(error);
-        });
+            throw error;
+        }
     }
 }
 

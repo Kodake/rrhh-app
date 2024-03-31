@@ -3,6 +3,7 @@ import store from '../store/empleadoStore';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { observer } from 'mobx-react';
+import Notifications from '../utils/Notifications';
 
 const Edit = () => {
     let nav = useNavigate();
@@ -11,7 +12,11 @@ const Edit = () => {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        store.setEmpleado({ ...store.empleado, [name]: value.trim() });
+        const trimmedValue = value.trim();
+
+        const newValue = name === "sueldo" && trimmedValue === "" ? "0" : trimmedValue;
+
+        store.setEmpleado({ ...store.empleado, [name]: newValue });
     };
 
     const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -21,6 +26,7 @@ const Edit = () => {
             return;
         }
         nav('/');
+        Notifications('Actualizado', 'El registro ha sido actualizado satisfactoriamente.', 'success');
     };
 
     useEffect(() => {
@@ -45,7 +51,7 @@ const Edit = () => {
                 </div>
                 <div className="mb-3">
                     <label htmlFor='Sueldo' className="form-label">{'Sueldo'}</label>
-                    <input type="number" step="any" className="form-control" id="sueldo" name="sueldo" onChange={handleInputChange} value={store.empleado.sueldo || ''} />
+                    <input type="number" step="any" className="form-control" id="sueldo" name="sueldo" onChange={handleInputChange} value={store.empleado.sueldo || 0} />
                 </div>
                 <div className="text-center">
                     <button type="submit" className="btn btn-warning btn-sm me-3">Actualizar</button>
