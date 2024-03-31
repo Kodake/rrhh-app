@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import store from '../store/empleadoStore';
 import { NumericFormat } from 'react-number-format';
@@ -46,54 +46,62 @@ const List = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {store.empleados.map((empleado: any) => (
-                        <tr key={empleado.idEmpleado}>
-                            <th scope="row">{empleado.idEmpleado}</th>
-                            <td>{empleado.nombre}</td>
-                            <td>{empleado.departamento}</td>
-                            <td>
-                                <NumericFormat
-                                    value={empleado.sueldo}
-                                    displayType={'text'}
-                                    thousandSeparator=","
-                                    prefix="$"
-                                    decimalScale={2}
-                                    fixedDecimalScale
-                                />
-                            </td>
-                            <td className="text-center">
-                                <Link to={`/editar/${empleado.idEmpleado}`} className="btn btn-warning btn-sm me-3">
-                                    Editar
-                                </Link>
-                                <button onClick={() => handleDeleteConfirmation(empleado.idEmpleado)} className="btn btn-danger btn-sm">
-                                    Eliminar
-                                </button>
-                            </td>
+                    {store.empleados.length > 0 ? (
+                        store.empleados.map((empleado: any) => (
+                            <tr key={empleado.idEmpleado}>
+                                <th scope="row">{empleado.idEmpleado}</th>
+                                <td>{empleado.nombre}</td>
+                                <td>{empleado.departamento}</td>
+                                <td>
+                                    <NumericFormat
+                                        value={empleado.sueldo}
+                                        displayType={'text'}
+                                        thousandSeparator=","
+                                        prefix="$"
+                                        decimalScale={2}
+                                        fixedDecimalScale
+                                    />
+                                </td>
+                                <td className="text-center">
+                                    <Link to={`/editar/${empleado.idEmpleado}`} className="btn btn-warning btn-sm me-3">
+                                        Editar
+                                    </Link>
+                                    <button onClick={() => handleDeleteConfirmation(empleado.idEmpleado)} className="btn btn-danger btn-sm">
+                                        Eliminar
+                                    </button>
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan={5} className="text-center">{'No hay datos para mostrar'}</td>
                         </tr>
-                    ))}
+                    )}
                 </tbody>
             </table>
-            <nav aria-label="Page navigation">
-                <ul className="pagination justify-content-center">
-                    <li className={`page-item ${store.currentPage === 0 ? 'disabled' : ''}`}>
-                        <button className="page-link" onClick={() => handlePageChange(store.currentPage - 1)} aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </button>
-                    </li>
-                    {[...Array(store.totalPages).keys()].map((page) => (
-                        <li key={page} className={`page-item ${store.currentPage === page ? 'active' : ''}`}>
-                            <button className="page-link" onClick={() => handlePageChange(page)}>
-                                {page + 1}
+            {store.totalPages > 1 && ( 
+                <nav aria-label="Page navigation">
+                    <ul className="pagination justify-content-center">
+                        <li className={`page-item ${store.currentPage === 0 ? 'disabled' : ''}`}>
+                            <button className="page-link" onClick={() => handlePageChange(store.currentPage - 1)} aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
                             </button>
                         </li>
-                    ))}
-                    <li className={`page-item ${store.currentPage === store.totalPages - 1 ? 'disabled' : ''}`}>
-                        <button className="page-link" onClick={() => handlePageChange(store.currentPage + 1)} aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </button>
-                    </li>
-                </ul>
-            </nav>
+                        {[...Array(store.totalPages).keys()].map((page) => (
+                            <li key={page} className={`page-item ${store.currentPage === page ? 'active' : ''}`}>
+                                <button className="page-link" onClick={() => handlePageChange(page)}>
+                                    {page + 1}
+                                </button>
+                            </li>
+                        ))}
+                        <li className={`page-item ${store.currentPage === store.totalPages - 1 ? 'disabled' : ''}`}>
+                            <button className="page-link" onClick={() => handlePageChange(store.currentPage + 1)} aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+            )}
         </div>
     );
 };

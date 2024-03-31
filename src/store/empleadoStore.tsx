@@ -87,7 +87,6 @@ class EmpleadoStore {
 
         await axios.get(url).then(resp => {
             const data = resp.data;
-            console.log(data);
             this.setEmpleados(data.content);
             this.setTotalPages(data.totalPages);
 
