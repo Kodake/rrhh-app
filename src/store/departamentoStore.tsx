@@ -1,19 +1,18 @@
 import { makeAutoObservable, observable, runInAction } from "mobx";
-import { Empleado } from "../classes/appClasses";
+import { Departamento } from "../classes/appClasses";
 import axios from "axios";
 import.meta.env.VITE_API_URL;
 
-class EmpleadoStore {
+class DepartamentoStore {
     totalPages = 0;
     currentPage = 0;
     pageSize = 2;
-    empleado: Empleado = {
-        idEmpleado: 0,
+    departamento: Departamento = {
+        idDepartamento: 0,
         nombre: '',
-        departamento: {idDepartamento: 0, nombre: ''},
-        sueldo: 0
     }
-    empleados: Empleado[] = [];
+    departamentos: Departamento[] = [];
+    select: Departamento[] = [];
     consultarApi: boolean = false;
     isValid: boolean = false;
     isLoading: boolean = false;
@@ -21,30 +20,32 @@ class EmpleadoStore {
 
     constructor() {
         makeAutoObservable(this, {
-            empleado: observable,
+            departamento: observable,
             consultarApi: observable,
             isLoading: observable,
             focusInput: observable
         });
     }
 
-    empleadoInicial: Empleado = {
-        idEmpleado: 0,
+    departamentoInicial: Departamento = {
+        idDepartamento: 0,
         nombre: '',
-        departamento: {idDepartamento: 0, nombre: ''},
-        sueldo: 0
     };
 
     limpiar = () => {
-        this.setEmpleado(this.empleadoInicial);
+        this.setDepartamento(this.departamentoInicial);
     };
 
-    setEmpleado(empleado: Empleado) {
-        this.empleado = empleado;
+    setDepartamento(departamento: Departamento) {
+        this.departamento = departamento;
     }
 
-    setEmpleados(empleados: Empleado[]) {
-        this.empleados = empleados;
+    setDepartamentos(departamentos: Departamento[]) {
+        this.departamentos = departamentos;
+    }
+
+    setSelect(select: Departamento[]) {
+        this.select = select;
     }
 
     setIsValid(isValid: boolean) {
@@ -68,14 +69,14 @@ class EmpleadoStore {
     }
 
     async listar(): Promise<void> {
-        const url = `${import.meta.env.VITE_API_URL}/empleados`;
+        const url = `${import.meta.env.VITE_API_URL}/departamentos2`;
 
         await axios.get(url).then(resp => {
             const data = resp.data;
-            this.setEmpleados(data);
+            this.setSelect(data);
 
             runInAction(() => {
-                this.setEmpleados(data);
+                this.setSelect(data);
             });
         }).catch((error) => {
             console.error(error);
@@ -83,15 +84,15 @@ class EmpleadoStore {
     }
 
     async listarPaginado(page: number, pageSize: number): Promise<void> {
-        const url = `${import.meta.env.VITE_API_URL}/empleados?page=${page}&pageSize=${pageSize}`;
+        const url = `${import.meta.env.VITE_API_URL}/departamentos?page=${page}&pageSize=${pageSize}`;
 
         await axios.get(url).then(resp => {
             const data = resp.data;
-            this.setEmpleados(data.content);
+            this.setDepartamentos(data.content);
             this.setTotalPages(data.totalPages);
 
             runInAction(() => {
-                this.setEmpleados(data.content);
+                this.setDepartamentos(data.content);
                 this.setTotalPages(data.totalPages);
             });
         }).catch((error) => {
@@ -100,14 +101,14 @@ class EmpleadoStore {
     }
 
     async buscarPorId(id: number): Promise<void> {
-        const url = `${import.meta.env.VITE_API_URL}/empleados/${id}`;
+        const url = `${import.meta.env.VITE_API_URL}/departamentos/${id}`;
 
         await axios.get(url).then(resp => {
             const data = resp.data;
-            this.setEmpleado(data);
+            this.setDepartamento(data);
 
             runInAction(() => {
-                this.setEmpleado(data);
+                this.setDepartamento(data);
             });
         }).catch((error) => {
             console.error(error);
@@ -115,11 +116,10 @@ class EmpleadoStore {
     }
 
     async guardar(): Promise<void> {
-        const url = `${import.meta.env.VITE_API_URL}/empleados`;
+        const url = `${import.meta.env.VITE_API_URL}/departamentos`;
 
         try {
-            console.log(this.empleado);
-            await axios.post(url, this.empleado);
+            await axios.post(url, this.departamento);
 
             this.limpiar();
             await this.listarPaginado(this.currentPage, this.pageSize);
@@ -130,10 +130,10 @@ class EmpleadoStore {
     }
 
     async actualizar(): Promise<void> {
-        const url = `${import.meta.env.VITE_API_URL}/empleados/${this.empleado.idEmpleado}`;
+        const url = `${import.meta.env.VITE_API_URL}/departamentos/${this.departamento.idDepartamento}`;
 
         try {
-            await axios.put(url, this.empleado);
+            await axios.put(url, this.departamento);
 
             this.limpiar();
             await this.listarPaginado(this.currentPage, this.pageSize);
@@ -142,20 +142,7 @@ class EmpleadoStore {
             throw error;
         }
     }
-
-    async eliminar(id: number): Promise<void> {
-        const url = `${import.meta.env.VITE_API_URL}/empleados/${id}`;
-
-        try {
-            await axios.delete(url);
-
-            await this.listarPaginado(this.currentPage, this.pageSize);
-        } catch (error) {
-            console.error(error);
-            throw error;
-        }
-    }
 }
 
-const empleadoStore = new EmpleadoStore();
-export default empleadoStore;
+const departamentoStore = new DepartamentoStore();
+export default departamentoStore;

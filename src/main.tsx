@@ -4,18 +4,26 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar.tsx';
-import Add from './components/Add.tsx';
-import Edit from './components/Edit.tsx';
+import EmpleadosList from './components/empleados/List.tsx';
+import EmpleadosAdd from './components/empleados/Add.tsx';
+import EmpleadosEdit from './components/empleados/Edit.tsx';
+import DepartamentosList from './components/departamentos/List.tsx';
+import DepartamentosAdd from './components/departamentos/Add.tsx';
+import DepartamentosEdit from './components/departamentos/Edit.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
       <Navbar />
       <Routes>
-          <Route path='/' element={<App />}></Route>
-          <Route path='/agregar' element={<Add />}></Route>
-          <Route path='/editar/:id' element={<Edit />}></Route>
-        </Routes>
+        <Route path='/' element={<App />}></Route>
+        <Route path='/empleados' element={<EmpleadosList />}></Route>
+        <Route path='/empleados/agregar' element={<EmpleadosAdd />}></Route>
+        <Route path='/empleados/editar/:id' element={<EmpleadosEdit />}></Route>
+        <Route path='/departamentos' element={<DepartamentosList />}></Route>
+        <Route path='/departamentos/agregar' element={<DepartamentosAdd />}></Route>
+        <Route path='/departamentos/editar/:id' element={<DepartamentosEdit />}></Route>
+      </Routes>
     </BrowserRouter>
   </React.StrictMode>,
 )
