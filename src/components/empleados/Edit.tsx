@@ -19,22 +19,6 @@ const Edit = () => {
         }
     }, []);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        const trimmedValue = value;
-
-        const newValue = name === "sueldo" && trimmedValue === "" ? "0" : trimmedValue;
-
-        store.setEmpleado({ ...store.empleado, [name]: newValue });
-    };
-
-    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        const idDepartamento = JSON.parse(value);
-        const departamento = { idDepartamento, string: '' };
-        store.setEmpleado({ ...store.empleado, [name]: departamento });
-    };
-
     const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const empleado = await store.actualizar();
@@ -53,12 +37,12 @@ const Edit = () => {
             <form onSubmit={handleSave}>
                 <div className="mb-3">
                     <label htmlFor='nombre' className="form-label">{'Nombre'}</label>
-                    <input type="text" className="form-control" id="nombre" name="nombre" autoComplete='off' required onChange={handleInputChange} value={store.empleado.nombre || ''} />
+                    <input type="text" className="form-control" id="nombre" name="nombre" autoComplete='off' required onChange={(e) => store.setEmpleado({ ...store.empleado, [e.target.name]: e.target.value })} value={store.empleado.nombre || ''} />
                 </div>
                 <div className="mb-3">
                     <label htmlFor='departamento' className="form-label">{'Departamento'}</label>
-                    <select className="form-select" id="departamento" name="departamento" required onChange={handleSelectChange} value={JSON.stringify(store.empleado.departamento.idDepartamento)} >
-                        <option value={JSON.stringify({ idDepartamento: 0, nombre: "" })}>Seleccione un departamento</option>
+                    <select className="form-select" id="departamento" name="departamento" required onChange={(e) => store.setDepartamento(parseInt(e.target.value))} value={store.empleado.departamento.idDepartamento} >
+                        <option value={0}>Seleccione un departamento</option>
                         {storeDep.select.map((departamento) => (
                             <option key={departamento.idDepartamento} value={departamento.idDepartamento}>
                                 {departamento.nombre}
@@ -68,7 +52,7 @@ const Edit = () => {
                 </div>
                 <div className="mb-3">
                     <label htmlFor='sueldo' className="form-label">{'Sueldo'}</label>
-                    <input type="number" step="any" className="form-control" id="sueldo" name="sueldo" autoComplete='off' onChange={handleInputChange} value={store.empleado.sueldo || 0} />
+                    <input type="number" step="any" className="form-control" id="sueldo" name="sueldo" autoComplete='off' onChange={(e) => store.setEmpleado({ ...store.empleado, [e.target.name]: e.target.value })} value={store.empleado.sueldo || 0} />
                 </div>
                 <div className="text-center">
                     <button type="submit" className="btn btn-success btn-sm me-sm-3">Actualizar</button>

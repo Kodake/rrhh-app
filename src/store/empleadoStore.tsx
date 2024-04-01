@@ -43,6 +43,11 @@ class EmpleadoStore {
         this.empleado = empleado;
     }
 
+    setDepartamento(idDepartamento: number) {
+        this.empleado.departamento.nombre = this.empleado.departamento.nombre;
+        this.empleado.departamento.idDepartamento = idDepartamento;
+    }
+
     setEmpleados(empleados: Empleado[]) {
         this.empleados = empleados;
     }
@@ -118,7 +123,6 @@ class EmpleadoStore {
         const url = `${import.meta.env.VITE_API_URL}/empleados`;
 
         try {
-            console.log(this.empleado);
             await axios.post(url, this.empleado);
 
             this.limpiar();

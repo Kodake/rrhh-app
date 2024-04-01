@@ -10,12 +10,6 @@ const Edit = () => {
 
     const { id } = useParams();
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-
-        store.setDepartamento({ ...store.departamento, [name]: value });
-    };
-
     const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const empleado = await store.actualizar();
@@ -40,7 +34,7 @@ const Edit = () => {
             <form onSubmit={handleSave}>
                 <div className="mb-3">
                     <label htmlFor='nombre' className="form-label">{'Nombre'}</label>
-                    <input type="text" className="form-control" id="nombre" name="nombre" autoComplete='off' required onChange={handleInputChange} value={store.departamento.nombre || ''} />
+                    <input type="text" className="form-control" id="nombre" name="nombre" autoComplete='off' required onChange={(e) => store.setDepartamento({ ...store.departamento, [e.target.name]: e.target.value })} value={store.departamento.nombre || ''} />
                 </div>
                 <div className="text-center">
                     <button type="submit" className="btn btn-success btn-sm me-sm-3">Actualizar</button>

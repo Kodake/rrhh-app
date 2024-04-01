@@ -7,11 +7,6 @@ import Notifications from '../../utils/Notifications';
 const Add = () => {
     let nav = useNavigate();
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        store.setDepartamento({ ...store.departamento, [name]: value });
-    };
-
     const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const departamento = await store.guardar();
@@ -30,7 +25,7 @@ const Add = () => {
             <form onSubmit={handleSave}>
                 <div className="mb-3">
                     <label htmlFor='nombre' className="form-label">{'Nombre'}</label>
-                    <input type="text" className="form-control" id="nombre" name="nombre" autoComplete='off' required onChange={handleInputChange} />
+                    <input type="text" className="form-control" id="nombre" name="nombre" autoComplete='off' required onChange={(e) => store.setDepartamento({ ...store.departamento, [e.target.name]: e.target.value })} />
                 </div>
                 <div className="text-center">
                     <button type="submit" className="btn btn-success btn-sm me-sm-3">Agregar</button>
