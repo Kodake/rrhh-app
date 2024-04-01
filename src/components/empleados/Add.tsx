@@ -60,7 +60,7 @@ const Add = () => {
                     <input type="number" step="any" className="form-control" id="sueldo" name="sueldo" autoComplete='off' value={0} onChange={handleInputChange} />
                 </div>
                 <div className="text-center">
-                    <button type="submit" className="btn btn-success btn-sm me-3">Agregar</button>
+                    <button type="submit" className="btn btn-success btn-sm me-sm-3">Agregar</button>
                     <Link to={'/'} className="btn btn-danger btn-sm">Regresar</Link>
                 </div>
             </form>

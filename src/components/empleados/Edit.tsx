@@ -71,7 +71,7 @@ const Edit = () => {
                     <input type="number" step="any" className="form-control" id="sueldo" name="sueldo" autoComplete='off' onChange={handleInputChange} value={store.empleado.sueldo || 0} />
                 </div>
                 <div className="text-center">
-                    <button type="submit" className="btn btn-success btn-sm me-3">Actualizar</button>
+                    <button type="submit" className="btn btn-success btn-sm me-sm-3">Actualizar</button>
                     <Link to={'/'} className="btn btn-danger btn-sm">Regresar</Link>
                 </div>
             </form>

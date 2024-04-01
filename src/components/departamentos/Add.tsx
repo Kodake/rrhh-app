@@ -33,7 +33,7 @@ const Add = () => {
                     <input type="text" className="form-control" id="nombre" name="nombre" autoComplete='off' required onChange={handleInputChange} />
                 </div>
                 <div className="text-center">
-                    <button type="submit" className="btn btn-success btn-sm me-3">Agregar</button>
+                    <button type="submit" className="btn btn-success btn-sm me-sm-3">Agregar</button>
                     <Link to={'/'} className="btn btn-danger btn-sm">Regresar</Link>
                 </div>
             </form>

@@ -6,7 +6,7 @@ import.meta.env.VITE_API_URL;
 class EmpleadoStore {
     totalPages = 0;
     currentPage = 0;
-    pageSize = 2;
+    pageSize = 0;
     empleado: Empleado = {
         idEmpleado: 0,
         nombre: '',

@@ -25,6 +25,7 @@ const List = () => {
 
         if (result.isConfirmed) {
             store.eliminar(id);
+            store.setCurrentPage(0);
             Notifications('Eliminado', 'El registro ha sido eliminado satisfactoriamente.', 'success');
         }
     };
