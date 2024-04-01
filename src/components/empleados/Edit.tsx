@@ -1,12 +1,13 @@
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { useEffect } from 'react';
 import store from '../../store/empleadoStore';
-import Notifications from '../../utils/Notifications';
 import storeDep from '../../store/departamentoStore';
+import useEmpleados from '../../hooks/useEmpleados';
 
 const Edit = () => {
-    let nav = useNavigate();
+    const { handleInputSueldo, handleInputEmpleado, handleInputDepartamento, handleSaveEmpleado } = useEmpleados();
+
     const { id } = useParams();
 
     useEffect(() => {
@@ -19,42 +20,19 @@ const Edit = () => {
         }
     }, []);
 
-    const handleInputChange = (e: any) => {
-        const { name, value } = e.target;
-
-        if (e.key === 'Backspace' || e.key === 'Delete') {
-            store.setEmpleado({ ...store.empleado, sueldo: 0 });
-        } else {
-            store.setEmpleado({ ...store.empleado, [name]: parseInt(value) });
-        }
-    };
-
-    const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (!store.validateEmpleado()) {
-            return;
-        }
-        const empleado = await store.actualizar();
-        if (empleado === null) {
-            return;
-        }
-        nav('/');
-        Notifications('Actualizado', 'El registro ha sido actualizado satisfactoriamente.', 'success');
-    };
-
     return (
         <div className="container">
             <div className="text-center m-3">
                 <h3>Editar Empleado</h3>
             </div>
-            <form onSubmit={handleSave}>
+            <form onSubmit={handleSaveEmpleado}>
                 <div className="mb-3">
                     <label htmlFor='nombre' className="form-label">{'Nombre'}</label>
-                    <input type="text" className="form-control" id="nombre" name="nombre" autoComplete='off' onChange={(e) => store.setEmpleado({ ...store.empleado, [e.target.name]: e.target.value })} value={store.empleado.nombre || ''} />
+                    <input type="text" className="form-control" id="nombre" name="nombre" autoComplete='off' onChange={handleInputEmpleado} value={store.empleado.nombre || ''} />
                 </div>
                 <div className="mb-3">
                     <label htmlFor='departamento' className="form-label">{'Departamento'}</label>
-                    <select className="form-select" id="departamento" name="departamento" onChange={(e) => store.setDepartamento(parseInt(e.target.value))} value={store.empleado.departamento.idDepartamento} >
+                    <select className="form-select" id="departamento" name="departamento" onChange={handleInputDepartamento} value={store.empleado.departamento.idDepartamento} >
                         <option value={0}>Seleccione un departamento</option>
                         {storeDep.select.map((departamento) => (
                             <option key={departamento.idDepartamento} value={departamento.idDepartamento}>
@@ -72,9 +50,9 @@ const Edit = () => {
                         id="sueldo"
                         name="sueldo"
                         autoComplete='off'
-                        onChange={(e) => store.setEmpleado({ ...store.empleado, [e.target.name]: e.target.value })}
-                        onKeyUp={handleInputChange}
-                        onKeyPress={handleInputChange}
+                        onChange={() => handleInputSueldo}
+                        onKeyUp={() => handleInputSueldo}
+                        onKeyPress={() => handleInputSueldo}
                         value={store.empleado.sueldo || 0} />
                 </div>
                 <div className="text-center">

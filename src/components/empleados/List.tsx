@@ -3,36 +3,14 @@ import { observer } from 'mobx-react';
 import store from '../../store/empleadoStore';
 import { NumericFormat } from 'react-number-format';
 import { Link } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import Notifications from '../../utils/Notifications';
+import useEmpleados from '../../hooks/useEmpleados';
 
 const List = () => {
+    const { handleDeleteConfirmation, handlePageChange } = useEmpleados();
+
     useEffect(() => {
         store.listarPaginado(store.currentPage, store.pageSize);
     }, [store.currentPage, store.pageSize]);
-
-    const handleDeleteConfirmation = async (id: number) => {
-        const result = await Swal.fire({
-            title: '¿Estás seguro?',
-            text: 'No se puede revertir este cambio',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí, eliminarlo',
-            allowOutsideClick: false,
-        });
-
-        if (result.isConfirmed) {
-            store.eliminar(id);
-            store.setCurrentPage(0);
-            Notifications('Eliminado', 'El registro ha sido eliminado satisfactoriamente.', 'success');
-        }
-    };
-
-    const handlePageChange = (page: number) => {
-        store.setCurrentPage(page);
-    };
 
     return (
         <>

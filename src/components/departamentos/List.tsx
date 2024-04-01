@@ -2,15 +2,14 @@ import { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import store from '../../store/departamentoStore';
 import { Link } from 'react-router-dom';
+import useDepartamentos from '../../hooks/useDepartamentos';
 
 const List = () => {
+    const { handlePageChange } = useDepartamentos();
+    
     useEffect(() => {
         store.listarPaginado(store.currentPage, store.pageSize);
     }, [store.currentPage, store.pageSize]);
-
-    const handlePageChange = (page: number) => {
-        store.setCurrentPage(page);
-    };
 
     return (
         <>

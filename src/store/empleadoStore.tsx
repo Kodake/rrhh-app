@@ -3,7 +3,7 @@ import { Empleado } from '../classes/appClasses';
 import axios from 'axios';
 import * as yup from 'yup';
 import { VALIDATION_STRINGS } from '../messages/appMessages';
-import Notifications from '../utils/Notifications';
+import Notifications from '../utils/useNotifications';
 import { renderToString } from 'react-dom/server';
 
 import.meta.env.VITE_API_URL;

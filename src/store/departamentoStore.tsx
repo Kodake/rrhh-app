@@ -3,7 +3,7 @@ import { Departamento } from '../classes/appClasses';
 import axios from 'axios';
 import * as yup from 'yup';
 import { VALIDATION_STRINGS } from '../messages/appMessages';
-import Notifications from '../utils/Notifications';
+import useNotifications from '../utils/useNotifications';
 import { renderToString } from 'react-dom/server';
 
 import.meta.env.VITE_API_URL;
@@ -91,7 +91,7 @@ class DepartamentoStore {
                     <li key={e.path} className='border-0 text-start'>{e.message}</li>
                 ));
                 const errorMessage = renderToString(<ul>{errorMessages}</ul>);
-                Notifications(VALIDATION_STRINGS.validationError, errorMessage, 'error');
+                useNotifications(VALIDATION_STRINGS.validationError, errorMessage, 'error');
             });
             return false;
         }

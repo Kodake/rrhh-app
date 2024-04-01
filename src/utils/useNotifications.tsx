@@ -1,6 +1,6 @@
-import Swal, { SweetAlertIcon } from "sweetalert2";
+import Swal, { SweetAlertIcon } from 'sweetalert2';
 
-const Notifications = (title: string, detail: string | HTMLElement | JQuery | undefined, icon: SweetAlertIcon) => {
+const useNotifications = (title: string, detail: string | HTMLElement | JQuery | undefined, icon: SweetAlertIcon) => {
     return (
         Swal.fire({
             title: `${title}`,
@@ -12,4 +12,4 @@ const Notifications = (title: string, detail: string | HTMLElement | JQuery | un
     )
 }
 
-export default Notifications;
+export default useNotifications;
