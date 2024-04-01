@@ -1,12 +1,13 @@
 import Swal, { SweetAlertIcon } from "sweetalert2";
 
-const Notifications = (title: string, text: string, icon: SweetAlertIcon) => {
+const Notifications = (title: string, detail: string | HTMLElement | JQuery | undefined, icon: SweetAlertIcon) => {
     return (
         Swal.fire({
             title: `${title}`,
-            text: `${text}`,
+            html: `${detail}`,
             icon: `${icon}`,
-            confirmButtonColor: '#3085d6'
+            confirmButtonColor: '#3085d6',
+            allowOutsideClick: false
         })
     )
 }

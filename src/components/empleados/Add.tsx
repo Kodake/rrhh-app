@@ -13,8 +13,21 @@ const Add = () => {
         storeDep.listar();
     }, []);
 
+    const handleInputChange = (e: any) => {
+        const { name, value } = e.target;
+
+        if (e.key === 'Backspace' || e.key === 'Delete') {
+            store.setEmpleado({ ...store.empleado, sueldo: 0 });
+        } else {
+            store.setEmpleado({ ...store.empleado, [name]: parseInt(value) });
+        }
+    };
+
     const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (!store.validateEmpleado()) {
+            return;
+        }
         const empleado = await store.guardar();
         if (empleado === null) {
             return;
@@ -31,11 +44,11 @@ const Add = () => {
             <form onSubmit={handleSave}>
                 <div className="mb-3">
                     <label htmlFor='nombre' className="form-label">{'Nombre'}</label>
-                    <input type="text" className="form-control" id="nombre" name="nombre" autoComplete='off' required onChange={(e) => store.setEmpleado({ ...store.empleado, [e.target.name]: e.target.value })} />
+                    <input type="text" className="form-control" id="nombre" name="nombre" autoComplete='off' onChange={(e) => store.setEmpleado({ ...store.empleado, [e.target.name]: e.target.value })} />
                 </div>
                 <div className="mb-3">
                     <label htmlFor='departamento' className="form-label">{'Departamento'}</label>
-                    <select className="form-select" id="departamento" name="departamento" required onChange={(e) => store.setDepartamento(parseInt(e.target.value))}>
+                    <select className="form-select" id="departamento" name="departamento" onChange={(e) => store.setDepartamento(parseInt(e.target.value))}>
                         <option value={0}>Seleccione un departamento</option>
                         {storeDep.select.map((departamento) => (
                             <option key={departamento.idDepartamento} value={departamento.idDepartamento}>
@@ -46,7 +59,17 @@ const Add = () => {
                 </div>
                 <div className="mb-3">
                     <label htmlFor='sueldo' className="form-label">{'Sueldo'}</label>
-                    <input type="number" step="any" className="form-control" id="sueldo" name="sueldo" autoComplete='off' onChange={(e) => store.setEmpleado({ ...store.empleado, [e.target.name]: e.target.value })} />
+                    <input
+                        type="number"
+                        step="any"
+                        className="form-control"
+                        id="sueldo"
+                        name="sueldo"
+                        autoComplete='off'
+                        onChange={(e) => store.setEmpleado({ ...store.empleado, [e.target.name]: e.target.value })}
+                        onKeyUp={handleInputChange}
+                        onKeyPress={handleInputChange}
+                        value={store.empleado.sueldo || 0} />
                 </div>
                 <div className="text-center">
                     <button type="submit" className="btn btn-success btn-sm me-sm-3">Agregar</button>

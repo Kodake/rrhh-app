@@ -1,6 +1,11 @@
-import { makeAutoObservable, observable, runInAction } from "mobx";
-import { Empleado } from "../classes/appClasses";
-import axios from "axios";
+import { makeAutoObservable, observable, runInAction } from 'mobx';
+import { Empleado } from '../classes/appClasses';
+import axios from 'axios';
+import * as yup from 'yup';
+import { VALIDATION_STRINGS } from '../messages/appMessages';
+import Notifications from '../utils/Notifications';
+import { renderToString } from 'react-dom/server';
+
 import.meta.env.VITE_API_URL;
 
 class EmpleadoStore {
@@ -10,7 +15,7 @@ class EmpleadoStore {
     empleado: Empleado = {
         idEmpleado: 0,
         nombre: '',
-        departamento: {idDepartamento: 0, nombre: ''},
+        departamento: { idDepartamento: 0, nombre: '' },
         sueldo: 0
     }
     empleados: Empleado[] = [];
@@ -31,7 +36,7 @@ class EmpleadoStore {
     empleadoInicial: Empleado = {
         idEmpleado: 0,
         nombre: '',
-        departamento: {idDepartamento: 0, nombre: ''},
+        departamento: { idDepartamento: 0, nombre: '' },
         sueldo: 0
     };
 
@@ -44,8 +49,8 @@ class EmpleadoStore {
     }
 
     setDepartamento(idDepartamento: number) {
-        this.empleado.departamento.nombre = this.empleado.departamento.nombre;
         this.empleado.departamento.idDepartamento = idDepartamento;
+        this.empleado.departamento.nombre = this.empleado.departamento.nombre;
     }
 
     setEmpleados(empleados: Empleado[]) {
@@ -70,6 +75,33 @@ class EmpleadoStore {
 
     setCurrentPage(currentPage: number) {
         this.currentPage = currentPage;
+    }
+
+    validationSchema = yup.object().shape({
+        nombre: yup.string()
+            .required(VALIDATION_STRINGS.nombreRequired)
+            .min(2, VALIDATION_STRINGS.nombreMinLength)
+            .max(50, VALIDATION_STRINGS.nombreMaxLength),
+        departamento: yup.object().shape({
+            idDepartamento: yup.number().moreThan(0, VALIDATION_STRINGS.departamentoChoose)
+        })
+    });
+
+    validateEmpleado() {
+        try {
+            this.validationSchema.validateSync(this.empleado, { abortEarly: false });
+            return true;
+        } catch (error) {
+            runInAction(() => {
+                const validationError = error as yup.ValidationError;
+                const errorMessages = validationError.inner.map((e) => (
+                    <li key={e.path} className='border-0 text-start'>{e.message}</li>
+                ));
+                const errorMessage = renderToString(<ul>{errorMessages}</ul>);
+                Notifications(VALIDATION_STRINGS.validationError, errorMessage, 'error');
+            });
+            return false;
+        }
     }
 
     async listar(): Promise<void> {

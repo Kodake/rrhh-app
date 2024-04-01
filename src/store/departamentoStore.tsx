@@ -1,6 +1,11 @@
-import { makeAutoObservable, observable, runInAction } from "mobx";
-import { Departamento } from "../classes/appClasses";
-import axios from "axios";
+import { makeAutoObservable, observable, runInAction } from 'mobx';
+import { Departamento } from '../classes/appClasses';
+import axios from 'axios';
+import * as yup from 'yup';
+import { VALIDATION_STRINGS } from '../messages/appMessages';
+import Notifications from '../utils/Notifications';
+import { renderToString } from 'react-dom/server';
+
 import.meta.env.VITE_API_URL;
 
 class DepartamentoStore {
@@ -66,6 +71,30 @@ class DepartamentoStore {
 
     setCurrentPage(currentPage: number) {
         this.currentPage = currentPage;
+    }
+
+    validationSchema = yup.object().shape({
+        nombre: yup.string()
+            .required(VALIDATION_STRINGS.nombreRequired)
+            .min(2, VALIDATION_STRINGS.nombreMinLength)
+            .max(50, VALIDATION_STRINGS.nombreMaxLength),
+    });
+
+    validateDepartamento() {
+        try {
+            this.validationSchema.validateSync(this.departamento, { abortEarly: false });
+            return true;
+        } catch (error) {
+            runInAction(() => {
+                const validationError = error as yup.ValidationError;
+                const errorMessages = validationError.inner.map((e) => (
+                    <li key={e.path} className='border-0 text-start'>{e.message}</li>
+                ));
+                const errorMessage = renderToString(<ul>{errorMessages}</ul>);
+                Notifications(VALIDATION_STRINGS.validationError, errorMessage, 'error');
+            });
+            return false;
+        }
     }
 
     async listar(): Promise<void> {
