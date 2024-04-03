@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
+import store from '../../store/empleadoStore';
 import storeDep from '../../store/departamentoStore';
 import { observer } from 'mobx-react';
 import { useEffect } from 'react';
 import useEmpleados from '../../hooks/useEmpleados';
 
 const Add = () => {
-    const { handleInputSueldo, handleInputEmpleado, handleInputDepartamento, handleSaveEmpleado } = useEmpleados();
+    const { handleInputSueldo, handleChangeSueldo, handleInputEmpleado, handleInputDepartamento, handleSaveEmpleado } = useEmpleados();
 
     useEffect(() => {
         storeDep.listar();
@@ -41,10 +42,10 @@ const Add = () => {
                         id="sueldo"
                         name="sueldo"
                         autoComplete='off'
-                        onChange={() => handleInputSueldo}
-                        onKeyUp={() => handleInputSueldo}
-                        onKeyPress={() => handleInputSueldo}
-                        value={0} />
+                        onChange={handleChangeSueldo}
+                        onKeyUp={handleInputSueldo}
+                        onKeyPress={handleInputSueldo}
+                        value={store.empleado.sueldo} />
                 </div>
                 <div className="text-center">
                     <button type="submit" className="btn btn-success btn-sm me-sm-3">Agregar</button>

@@ -19,17 +19,12 @@ class EmpleadoStore {
         sueldo: 0
     }
     empleados: Empleado[] = [];
-    consultarApi: boolean = false;
-    isValid: boolean = false;
     isLoading: boolean = false;
-    focusInput: boolean = false;
 
     constructor() {
         makeAutoObservable(this, {
             empleado: observable,
-            consultarApi: observable,
             isLoading: observable,
-            focusInput: observable
         });
     }
 
@@ -57,16 +52,8 @@ class EmpleadoStore {
         this.empleados = empleados;
     }
 
-    setIsValid(isValid: boolean) {
-        this.isValid = isValid;
-    }
-
     setIsLoading(isLoading: boolean) {
         this.isLoading = isLoading;
-    }
-
-    setFocusInput(focusInput: boolean) {
-        this.focusInput = focusInput;
     }
 
     setTotalPages(totalPages: number) {
@@ -83,8 +70,11 @@ class EmpleadoStore {
             .min(2, VALIDATION_STRINGS.nombreMinLength)
             .max(50, VALIDATION_STRINGS.nombreMaxLength),
         departamento: yup.object().shape({
-            idDepartamento: yup.number().moreThan(0, VALIDATION_STRINGS.departamentoChoose)
-        })
+            idDepartamento: yup.number().moreThan(0, VALIDATION_STRINGS.departamentoChoose),
+        }),
+        sueldo: yup.number()
+            .required(VALIDATION_STRINGS.sueldoRequired)
+            .moreThan(0, VALIDATION_STRINGS.sueldoMinLength)
     });
 
     validateEmpleado() {

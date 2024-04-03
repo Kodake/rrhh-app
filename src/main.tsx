@@ -10,9 +10,11 @@ import EmpleadosEdit from './components/empleados/Edit.tsx';
 import DepartamentosList from './components/departamentos/List.tsx';
 import DepartamentosAdd from './components/departamentos/Add.tsx';
 import DepartamentosEdit from './components/departamentos/Edit.tsx';
+import Loading from './components/Loading.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
+    <Loading />
     <BrowserRouter>
       <Navbar />
       <Routes>

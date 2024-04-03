@@ -6,7 +6,7 @@ import storeDep from '../../store/departamentoStore';
 import useEmpleados from '../../hooks/useEmpleados';
 
 const Edit = () => {
-    const { handleInputSueldo, handleInputEmpleado, handleInputDepartamento, handleSaveEmpleado } = useEmpleados();
+    const { handleInputSueldo, handleChangeSueldo, handleInputEmpleado, handleInputDepartamento, handleSaveEmpleado } = useEmpleados();
 
     const { id } = useParams();
 
@@ -50,10 +50,10 @@ const Edit = () => {
                         id="sueldo"
                         name="sueldo"
                         autoComplete='off'
-                        onChange={() => handleInputSueldo}
-                        onKeyUp={() => handleInputSueldo}
-                        onKeyPress={() => handleInputSueldo}
-                        value={store.empleado.sueldo || 0} />
+                        onChange={handleChangeSueldo}
+                        onKeyUp={handleInputSueldo}
+                        onKeyPress={handleInputSueldo}
+                        value={store.empleado.sueldo} />
                 </div>
                 <div className="text-center">
                     <button type="submit" className="btn btn-success btn-sm me-sm-3">Actualizar</button>

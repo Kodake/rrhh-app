@@ -5,19 +5,23 @@ import Swal from 'sweetalert2';
 
 const useEmpleados = () => {
     let nav = useNavigate();
-    
+
     const handleInputSueldo = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const { name, value } = e.currentTarget;
 
         if (e.key === 'Backspace' || e.key === 'Delete') {
             store.setEmpleado({ ...store.empleado, sueldo: 0 });
         } else {
-            store.setEmpleado({ ...store.empleado, [name]: parseInt(value) });
+            store.setEmpleado({ ...store.empleado, [name]: parseFloat(value) });
         }
     };
 
+    const handleChangeSueldo: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+        const { name, value } = e.currentTarget;
+        store.setEmpleado({ ...store.empleado, [name]: parseFloat(value) });
+    };
+
     const handleInputEmpleado = (e: React.ChangeEvent<HTMLInputElement>) => {
-        debugger;
         const { name, value } = e.target;
         store.setEmpleado({ ...store.empleado, [name]: value });
     };
@@ -64,6 +68,7 @@ const useEmpleados = () => {
 
     return {
         handleInputSueldo,
+        handleChangeSueldo,
         handleInputEmpleado,
         handleInputDepartamento,
         handleSaveEmpleado,
