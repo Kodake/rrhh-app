@@ -39,7 +39,7 @@ const List = () => {
                                     <td>{empleado.departamento.nombre}</td>
                                     <td>
                                         <NumericFormat
-                                            value={empleado.sueldo}
+                                            value={empleado.sueldo.cantidad}
                                             displayType={'text'}
                                             thousandSeparator=","
                                             prefix="$"

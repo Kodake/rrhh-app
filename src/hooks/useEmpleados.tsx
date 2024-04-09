@@ -7,18 +7,25 @@ const useEmpleados = () => {
     let nav = useNavigate();
 
     const handleInputSueldo = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        const { name, value } = e.currentTarget;
+        const { value } = e.currentTarget;
+        const parsedValue = parseFloat(value);
 
-        if (e.key === 'Backspace' || e.key === 'Delete') {
-            store.setEmpleado({ ...store.empleado, sueldo: 0 });
-        } else {
-            store.setEmpleado({ ...store.empleado, [name]: parseFloat(value) });
+        if (!isNaN(parsedValue)) {
+            if (e.key === 'Backspace' || e.key === 'Delete') {
+                store.setEmpleado({ ...store.empleado, sueldo: { ...store.empleado.sueldo, cantidad: 0 } });
+            } else {
+                store.setEmpleado({ ...store.empleado, sueldo: { ...store.empleado.sueldo, cantidad: parsedValue } });
+            }
         }
     };
 
     const handleChangeSueldo: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-        const { name, value } = e.currentTarget;
-        store.setEmpleado({ ...store.empleado, [name]: parseFloat(value) });
+        const { value } = e.currentTarget;
+        const parsedValue = parseFloat(value);
+
+        if (!isNaN(parsedValue)) {
+            store.setEmpleado({ ...store.empleado, sueldo: { ...store.empleado.sueldo, cantidad: parsedValue } });
+        }
     };
 
     const handleInputEmpleado = (e: React.ChangeEvent<HTMLInputElement>) => {

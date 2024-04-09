@@ -16,7 +16,7 @@ class EmpleadoStore {
         idEmpleado: 0,
         nombre: '',
         departamento: { idDepartamento: 0, nombre: '' },
-        sueldo: 0
+        sueldo: { idSueldo: 0, cantidad: 0 }
     }
     empleados: Empleado[] = [];
     isLoading: boolean = false;
@@ -32,7 +32,7 @@ class EmpleadoStore {
         idEmpleado: 0,
         nombre: '',
         departamento: { idDepartamento: 0, nombre: '' },
-        sueldo: 0
+        sueldo: { idSueldo: 0, cantidad: 0 }
     };
 
     limpiar = () => {
@@ -72,9 +72,11 @@ class EmpleadoStore {
         departamento: yup.object().shape({
             idDepartamento: yup.number().moreThan(0, VALIDATION_STRINGS.departamentoChoose),
         }),
-        sueldo: yup.number()
-            .required(VALIDATION_STRINGS.sueldoRequired)
-            .moreThan(0, VALIDATION_STRINGS.sueldoMinLength)
+        sueldo: yup.object().shape({
+            cantidad: yup.number()
+                .required(VALIDATION_STRINGS.sueldoRequired)
+                .moreThan(0, VALIDATION_STRINGS.sueldoMinLength)
+        })
     });
 
     validateEmpleado() {

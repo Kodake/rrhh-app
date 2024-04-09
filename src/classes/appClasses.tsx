@@ -2,9 +2,9 @@ export class Empleado {
     idEmpleado: number;
     nombre: string;
     departamento: Departamento;
-    sueldo: number;
+    sueldo: Sueldo;
 
-    constructor(idEmpleado: number, nombre: string, departamento: Departamento, sueldo: number) {
+    constructor(idEmpleado: number, nombre: string, departamento: Departamento, sueldo: Sueldo) {
         this.idEmpleado = idEmpleado;
         this.nombre = nombre;
         this.departamento = departamento;
@@ -19,5 +19,16 @@ export class Departamento {
     constructor(idDepartamento: number, nombre: string) {
         this.idDepartamento = idDepartamento;
         this.nombre = nombre;
+    }
+}
+
+
+export class Sueldo {
+    idSueldo: number;
+    cantidad: number;
+
+    constructor(idSueldo: number, cantidad: number) {
+        this.idSueldo = idSueldo;
+        this.cantidad = cantidad;
     }
 }
