@@ -45,7 +45,7 @@ const Add = () => {
                         onChange={handleChangeSueldo}
                         onKeyUp={handleInputSueldo}
                         onKeyPress={handleInputSueldo}
-                        value={store.empleado.sueldo.cantidad} />
+                        value={store.empleado.sueldo} />
                 </div>
                 <div className="text-center">
                     <button type="submit" className="btn btn-success btn-sm me-sm-3">Agregar</button>

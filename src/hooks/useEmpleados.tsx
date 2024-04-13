@@ -12,9 +12,9 @@ const useEmpleados = () => {
 
         if (!isNaN(parsedValue)) {
             if (e.key === 'Backspace' || e.key === 'Delete') {
-                store.setEmpleado({ ...store.empleado, sueldo: { ...store.empleado.sueldo, cantidad: 0 } });
+                store.setEmpleado({ ...store.empleado, sueldo: 0 });
             } else {
-                store.setEmpleado({ ...store.empleado, sueldo: { ...store.empleado.sueldo, cantidad: parsedValue } });
+                store.setEmpleado({ ...store.empleado, sueldo: parsedValue });
             }
         }
     };
@@ -24,7 +24,7 @@ const useEmpleados = () => {
         const parsedValue = parseFloat(value);
 
         if (!isNaN(parsedValue)) {
-            store.setEmpleado({ ...store.empleado, sueldo: { ...store.empleado.sueldo, cantidad: parsedValue } });
+            store.setEmpleado({ ...store.empleado, sueldo: parsedValue });
         }
     };
 
@@ -34,7 +34,8 @@ const useEmpleados = () => {
     };
 
     const handleInputDepartamento = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        store.setDepartamento(parseInt(e.target.value));
+        const { name, value } = e.target;
+        store.setEmpleado({ ...store.empleado, [name]: value });
     };
 
     const handleSaveEmpleado = async (e: React.FormEvent<HTMLFormElement>) => {

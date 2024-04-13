@@ -1,5 +1,5 @@
 import { makeAutoObservable, observable, runInAction } from 'mobx';
-import { Empleado } from '../classes/appClasses';
+import { EmpleadoDTO, GetEmpleadoDTO } from '../classes/appClasses';
 import axios from 'axios';
 import * as yup from 'yup';
 import { VALIDATION_STRINGS } from '../messages/appMessages';
@@ -12,13 +12,13 @@ class EmpleadoStore {
     totalPages = 0;
     currentPage = 0;
     pageSize = 0;
-    empleado: Empleado = {
+    empleado: EmpleadoDTO = {
         idEmpleado: 0,
         nombre: '',
-        departamento: { idDepartamento: 0, nombre: '' },
-        sueldo: { idSueldo: 0, cantidad: 0 }
+        departamento: 0,
+        sueldo: 0
     }
-    empleados: Empleado[] = [];
+    empleados: GetEmpleadoDTO[] = [];
     isLoading: boolean = false;
 
     constructor() {
@@ -28,27 +28,22 @@ class EmpleadoStore {
         });
     }
 
-    empleadoInicial: Empleado = {
+    empleadoInicial: EmpleadoDTO = {
         idEmpleado: 0,
         nombre: '',
-        departamento: { idDepartamento: 0, nombre: '' },
-        sueldo: { idSueldo: 0, cantidad: 0 }
+        departamento: 0,
+        sueldo: 0
     };
 
     limpiar = () => {
         this.setEmpleado(this.empleadoInicial);
     };
 
-    setEmpleado(empleado: Empleado) {
+    setEmpleado(empleado: EmpleadoDTO) {
         this.empleado = empleado;
     }
 
-    setDepartamento(idDepartamento: number) {
-        this.empleado.departamento.idDepartamento = idDepartamento;
-        this.empleado.departamento.nombre = this.empleado.departamento.nombre;
-    }
-
-    setEmpleados(empleados: Empleado[]) {
+    setEmpleados(empleados: GetEmpleadoDTO[]) {
         this.empleados = empleados;
     }
 
@@ -69,14 +64,10 @@ class EmpleadoStore {
             .required(VALIDATION_STRINGS.nombreRequired)
             .min(2, VALIDATION_STRINGS.nombreMinLength)
             .max(50, VALIDATION_STRINGS.nombreMaxLength),
-        departamento: yup.object().shape({
-            idDepartamento: yup.number().moreThan(0, VALIDATION_STRINGS.departamentoChoose),
-        }),
-        sueldo: yup.object().shape({
-            cantidad: yup.number()
-                .required(VALIDATION_STRINGS.sueldoRequired)
-                .moreThan(0, VALIDATION_STRINGS.sueldoMinLength)
-        })
+        departamento: yup.number().moreThan(0, VALIDATION_STRINGS.departamentoChoose),
+        sueldo: yup.number()
+            .required(VALIDATION_STRINGS.sueldoRequired)
+            .moreThan(0, VALIDATION_STRINGS.sueldoMinLength)
     });
 
     validateEmpleado() {

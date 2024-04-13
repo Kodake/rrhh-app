@@ -32,7 +32,7 @@ const Edit = () => {
                 </div>
                 <div className="mb-3">
                     <label htmlFor='departamento' className="form-label">{'Departamento'}</label>
-                    <select className="form-select" id="departamento" name="departamento" onChange={handleInputDepartamento} value={store.empleado.departamento.idDepartamento} >
+                    <select className="form-select" id="departamento" name="departamento" onChange={handleInputDepartamento} value={store.empleado.departamento} >
                         <option value={0}>Seleccione un departamento</option>
                         {storeDep.select.map((departamento) => (
                             <option key={departamento.idDepartamento} value={departamento.idDepartamento}>
@@ -53,7 +53,7 @@ const Edit = () => {
                         onChange={handleChangeSueldo}
                         onKeyUp={handleInputSueldo}
                         onKeyPress={handleInputSueldo}
-                        value={store.empleado.sueldo.cantidad} />
+                        value={store.empleado.sueldo} />
                 </div>
                 <div className="text-center">
                     <button type="submit" className="btn btn-success btn-sm me-sm-3">Actualizar</button>

@@ -1,5 +1,5 @@
 import { makeAutoObservable, observable, runInAction } from 'mobx';
-import { Departamento } from '../classes/appClasses';
+import { DepartamentoDTO } from '../classes/appClasses';
 import axios from 'axios';
 import * as yup from 'yup';
 import { VALIDATION_STRINGS } from '../messages/appMessages';
@@ -12,12 +12,12 @@ class DepartamentoStore {
     totalPages = 0;
     currentPage = 0;
     pageSize = 2;
-    departamento: Departamento = {
+    departamento: DepartamentoDTO = {
         idDepartamento: 0,
         nombre: '',
     }
-    departamentos: Departamento[] = [];
-    select: Departamento[] = [];
+    departamentos: DepartamentoDTO[] = [];
+    select: DepartamentoDTO[] = [];
     consultarApi: boolean = false;
     isValid: boolean = false;
     isLoading: boolean = false;
@@ -32,7 +32,7 @@ class DepartamentoStore {
         });
     }
 
-    departamentoInicial: Departamento = {
+    departamentoInicial: DepartamentoDTO = {
         idDepartamento: 0,
         nombre: '',
     };
@@ -41,15 +41,15 @@ class DepartamentoStore {
         this.setDepartamento(this.departamentoInicial);
     };
 
-    setDepartamento(departamento: Departamento) {
+    setDepartamento(departamento: DepartamentoDTO) {
         this.departamento = departamento;
     }
 
-    setDepartamentos(departamentos: Departamento[]) {
+    setDepartamentos(departamentos: DepartamentoDTO[]) {
         this.departamentos = departamentos;
     }
 
-    setSelect(select: Departamento[]) {
+    setSelect(select: DepartamentoDTO[]) {
         this.select = select;
     }
 

@@ -36,10 +36,10 @@ const List = () => {
                                 <tr key={empleado.idEmpleado}>
                                     <th scope="row">{empleado.idEmpleado}</th>
                                     <td>{empleado.nombre}</td>
-                                    <td>{empleado.departamento.nombre}</td>
+                                    <td>{empleado.departamento}</td>
                                     <td>
                                         <NumericFormat
-                                            value={empleado.sueldo.cantidad}
+                                            value={empleado.sueldo}
                                             displayType={'text'}
                                             thousandSeparator=","
                                             prefix="$"

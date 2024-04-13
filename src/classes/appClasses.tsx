@@ -1,10 +1,10 @@
-export class Empleado {
+export class EmpleadoDTO {
     idEmpleado: number;
     nombre: string;
-    departamento: Departamento;
-    sueldo: Sueldo;
+    departamento: number;
+    sueldo: number;
 
-    constructor(idEmpleado: number, nombre: string, departamento: Departamento, sueldo: Sueldo) {
+    constructor(idEmpleado: number, nombre: string, departamento: number, sueldo: number) {
         this.idEmpleado = idEmpleado;
         this.nombre = nombre;
         this.departamento = departamento;
@@ -12,23 +12,26 @@ export class Empleado {
     }
 }
 
-export class Departamento {
+export class GetEmpleadoDTO {
+    idEmpleado: number;
+    nombre: string;
+    departamento: string;
+    sueldo: number;
+
+    constructor(idEmpleado: number, nombre: string, departamento: string, sueldo: number) {
+        this.idEmpleado = idEmpleado;
+        this.nombre = nombre;
+        this.departamento = departamento;
+        this.sueldo = sueldo;
+    }
+}
+
+export class DepartamentoDTO {
     idDepartamento: number;
     nombre: string;
 
     constructor(idDepartamento: number, nombre: string) {
         this.idDepartamento = idDepartamento;
         this.nombre = nombre;
-    }
-}
-
-
-export class Sueldo {
-    idSueldo: number;
-    cantidad: number;
-
-    constructor(idSueldo: number, cantidad: number) {
-        this.idSueldo = idSueldo;
-        this.cantidad = cantidad;
     }
 }
