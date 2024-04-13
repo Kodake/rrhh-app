@@ -10,8 +10,8 @@ import.meta.env.VITE_API_URL;
 
 class DepartamentoStore {
     totalPages = 0;
-    currentPage = 0;
-    pageSize = 2;
+    pageNumber = 0;
+    pageSize = 5;
     departamento: DepartamentoDTO = {
         idDepartamento: 0,
         nombre: '',
@@ -69,8 +69,8 @@ class DepartamentoStore {
         this.totalPages = totalPages;
     }
 
-    setCurrentPage(currentPage: number) {
-        this.currentPage = currentPage;
+    setCurrentPage(pageNumber: number) {
+        this.pageNumber = pageNumber;
     }
 
     validationSchema = yup.object().shape({
@@ -112,8 +112,8 @@ class DepartamentoStore {
         });
     }
 
-    async listarPaginado(page: number, pageSize: number): Promise<void> {
-        const url = `${import.meta.env.VITE_API_URL}/departamentos?page=${page}&pageSize=${pageSize}`;
+    async listarPaginado(pageNumber: number, pageSize: number): Promise<void> {
+        const url = `${import.meta.env.VITE_API_URL}/departamentos?pageNumber=${pageNumber}&pageSize=${pageSize}`;
 
         await axios.get(url).then(resp => {
             const data = resp.data;
@@ -151,7 +151,7 @@ class DepartamentoStore {
             await axios.post(url, this.departamento);
 
             this.limpiar();
-            await this.listarPaginado(this.currentPage, this.pageSize);
+            await this.listarPaginado(this.pageNumber, this.pageSize);
         } catch (error) {
             console.error(error);
             throw error;
@@ -165,7 +165,7 @@ class DepartamentoStore {
             await axios.put(url, this.departamento);
 
             this.limpiar();
-            await this.listarPaginado(this.currentPage, this.pageSize);
+            await this.listarPaginado(this.pageNumber, this.pageSize);
         } catch (error) {
             console.error(error);
             throw error;

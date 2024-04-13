@@ -10,8 +10,8 @@ import.meta.env.VITE_API_URL;
 
 class EmpleadoStore {
     totalPages = 0;
-    currentPage = 0;
-    pageSize = 0;
+    pageNumber = 0;
+    pageSize = 5;
     empleado: EmpleadoDTO = {
         idEmpleado: 0,
         nombre: '',
@@ -55,8 +55,8 @@ class EmpleadoStore {
         this.totalPages = totalPages;
     }
 
-    setCurrentPage(currentPage: number) {
-        this.currentPage = currentPage;
+    setCurrentPage(pageNumber: number) {
+        this.pageNumber = pageNumber;
     }
 
     validationSchema = yup.object().shape({
@@ -102,8 +102,8 @@ class EmpleadoStore {
         });
     }
 
-    async listarPaginado(page: number, pageSize: number): Promise<void> {
-        const url = `${import.meta.env.VITE_API_URL}/empleados?page=${page}&pageSize=${pageSize}`;
+    async listarPaginado(pageNumber: number, pageSize: number): Promise<void> {
+        const url = `${import.meta.env.VITE_API_URL}/empleados?pageNumber=${pageNumber}&pageSize=${pageSize}`;
 
         await axios.get(url).then(resp => {
             const data = resp.data;
@@ -141,7 +141,7 @@ class EmpleadoStore {
             await axios.post(url, this.empleado);
 
             this.limpiar();
-            await this.listarPaginado(this.currentPage, this.pageSize);
+            await this.listarPaginado(this.pageNumber, this.pageSize);
         } catch (error) {
             console.error(error);
             throw error;
@@ -155,7 +155,7 @@ class EmpleadoStore {
             await axios.put(url, this.empleado);
 
             this.limpiar();
-            await this.listarPaginado(this.currentPage, this.pageSize);
+            await this.listarPaginado(this.pageNumber, this.pageSize);
         } catch (error) {
             console.error(error);
             throw error;
@@ -168,7 +168,7 @@ class EmpleadoStore {
         try {
             await axios.delete(url);
 
-            await this.listarPaginado(this.currentPage, this.pageSize);
+            await this.listarPaginado(this.pageNumber, this.pageSize);
         } catch (error) {
             console.error(error);
             throw error;

@@ -9,8 +9,8 @@ const List = () => {
     const { handleDeleteConfirmation, handlePageChange } = useEmpleados();
 
     useEffect(() => {
-        store.listarPaginado(store.currentPage, store.pageSize);
-    }, [store.currentPage, store.pageSize]);
+        store.listarPaginado(store.pageNumber, store.pageSize);
+    }, [store.pageNumber, store.pageSize]);
 
     return (
         <>
@@ -72,20 +72,20 @@ const List = () => {
                 {store.totalPages > 1 && (
                     <nav aria-label="Page navigation">
                         <ul className="pagination justify-content-center">
-                            <li className={`page-item ${store.currentPage === 0 ? 'disabled' : ''}`}>
-                                <button className="page-link" onClick={() => handlePageChange(store.currentPage - 1)} aria-label="Previous">
+                            <li className={`page-item ${store.pageNumber === 0 ? 'disabled' : ''}`}>
+                                <button className="page-link" onClick={() => handlePageChange(store.pageNumber - 1)} aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </button>
                             </li>
                             {[...Array(store.totalPages).keys()].map((page) => (
-                                <li key={page} className={`page-item ${store.currentPage === page ? 'active' : ''}`}>
+                                <li key={page} className={`page-item ${store.pageNumber === page ? 'active' : ''}`}>
                                     <button className="page-link" onClick={() => handlePageChange(page)}>
                                         {page + 1}
                                     </button>
                                 </li>
                             ))}
-                            <li className={`page-item ${store.currentPage === store.totalPages - 1 ? 'disabled' : ''}`}>
-                                <button className="page-link" onClick={() => handlePageChange(store.currentPage + 1)} aria-label="Next">
+                            <li className={`page-item ${store.pageNumber === store.totalPages - 1 ? 'disabled' : ''}`}>
+                                <button className="page-link" onClick={() => handlePageChange(store.pageNumber + 1)} aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </button>
                             </li>
